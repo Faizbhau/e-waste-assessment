@@ -1,0 +1,14 @@
+0000000000000000000000000000000000000000 ab21c890729a5825617198283ec13cb67c556bd9 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744093604 +0000	commit (initial): Initial commit
+ab21c890729a5825617198283ec13cb67c556bd9 a0eb19d612b2000873af5721e0e82f9f6c5dd92c mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744093604 +0000	commit: Initial checkpoint
+a0eb19d612b2000873af5721e0e82f9f6c5dd92c f31d01abe8b2ba62087259799ba92d87ccffc96a mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744094047 +0000	commit: Implement a web application for automated e-waste component quality assessment.
+f31d01abe8b2ba62087259799ba92d87ccffc96a 8924118be7158c380d1856a3c8207f3a5ad26ff7 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744094245 +0000	commit: Update copyright year to 2025
+8924118be7158c380d1856a3c8207f3a5ad26ff7 33418e757c600908e345d507e94dccf6fed684a7 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744094375 +0000	commit: Add PostgreSQL database support for e-waste assessment web application.
+33418e757c600908e345d507e94dccf6fed684a7 479738e65216ad5aca993bfb0bafe7fa72794209 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744096918 +0000	commit: Add new interactive pages to improve user experience
+479738e65216ad5aca993bfb0bafe7fa72794209 dcf084557bb25aace7e05ff191b4592dd62a3bcb mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744097584 +0000	commit: Add author page and improve sorting of assessments
+dcf084557bb25aace7e05ff191b4592dd62a3bcb c44402fac2b47605b976c3c13c52baf6964fe56c mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744097775 +0000	commit: Update author's employment dates
+c44402fac2b47605b976c3c13c52baf6964fe56c 83637e9b4110da4790eeeae147fbf6f9ccbc6449 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744097904 +0000	commit: Fix author image cropping issue by adjusting image height and positioning.
+83637e9b4110da4790eeeae147fbf6f9ccbc6449 b72c4685e1abc597766bcde6299d843237c6a897 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744098210 +0000	commit: Update author biography
+b72c4685e1abc597766bcde6299d843237c6a897 2b02e9166384c1e7404a4e23c6b543ec741aa6a9 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744098336 +0000	commit: Update author information on the website
+2b02e9166384c1e7404a4e23c6b543ec741aa6a9 509ee74404f2ebd512f93dd8383e85e1143c1700 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744098412 +0000	commit: Update author bio to include Engineering degree
+509ee74404f2ebd512f93dd8383e85e1143c1700 49a06ed045f2364bd5b95ee67afc1c65ab15a153 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744098694 +0000	commit: Add author contact links
+49a06ed045f2364bd5b95ee67afc1c65ab15a153 d55451f43d82e6daba49c75519360ad846cff6c8 mfaiz7166 <41265535-mfaiz7166@users.noreply.replit.com> 1744102487 +0000	commit: Add project files for e-waste component assessment web application
