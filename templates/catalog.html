@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">E-Waste Component Catalog</h1>
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <p>This catalog provides information about different types of e-waste components that can be assessed using our system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="componentCards">
+        <!-- Component cards will be dynamically loaded here -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Circuit Boards</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/circuit_board.jpg') }}" class="card-img-top" alt="Circuit Board" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">Printed Circuit Boards (PCBs) are the foundation of electronic devices, connecting electronic components.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Computers, phones, TVs</li>
+                        <li class="list-group-item">Reusability factors: Condition, component density</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-success">0.75</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Processors/CPUs</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/cpu.jpg') }}" class="card-img-top" alt="CPU" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">Central Processing Units (CPUs) are the brain of computers, performing calculations and instructions.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Computers, servers</li>
+                        <li class="list-group-item">Reusability factors: Age, pins condition</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-warning">0.62</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title mb-0">Memory Modules</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/memory.jpg') }}" class="card-img-top" alt="Memory" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">RAM and other memory modules store data temporarily or permanently in electronic devices.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Computers, game consoles</li>
+                        <li class="list-group-item">Reusability factors: Corrosion, contact points</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-success">0.81</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">Power Supply Units</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/psu.jpg') }}" class="card-img-top" alt="Power Supply" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">Power Supply Units (PSUs) convert mains electricity to usable power for electronic components.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Desktop computers, servers</li>
+                        <li class="list-group-item">Reusability factors: Capacitor condition, output stability</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-warning">0.59</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Storage Drives</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/hdd.jpg') }}" class="card-img-top" alt="Hard Drive" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">Hard drives, SSDs and other storage media used to store data permanently in digital devices.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Computers, external storage</li>
+                        <li class="list-group-item">Reusability factors: Read/write cycles, physical damage</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-success">0.72</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0">Display Panels</h5>
+                </div>
+                <img src="{{ url_for('static', filename='img/display.jpg') }}" class="card-img-top" alt="Display Panel" onerror="this.src='{{ url_for('static', filename='img/placeholder.svg') }}'">
+                <div class="card-body">
+                    <p class="card-text">LCD, LED, and other display technologies used in monitors, TVs, and mobile devices.</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">Common in: Monitors, TVs, phones</li>
+                        <li class="list-group-item">Reusability factors: Dead pixels, brightness uniformity</li>
+                        <li class="list-group-item">Average quality score: <span class="badge bg-danger">0.48</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // This function would be used to load dynamic data from the database
+    // when we implement real-time data fetching
+    function updateCatalogWithRealData() {
+        fetch('/api/component-stats')
+            .then(response => response.json())
+            .then(data => {
+                // Update component cards with real data
+                console.log("Component stats loaded:", data);
+                // Implementation would go here
+            })
+            .catch(error => {
+                console.error('Error fetching component statistics:', error);
+            });
+    }
+    
+    // Call this when we have the API endpoint ready
+    // updateCatalogWithRealData();
+</script>
+{% endblock %}

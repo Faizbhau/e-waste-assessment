@@ -1,0 +1,429 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Detailed Assessment Statistics</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <p>This page provides detailed statistical insights into the e-waste components that have been assessed with our system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Assessments</h5>
+                    <p class="display-4" id="totalAssessments">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Reusable Components</h5>
+                    <p class="display-4" id="reusableCount">0</p>
+                    <p class="card-text" id="reusablePercentage">0%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-danger h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Non-Reusable</h5>
+                    <p class="display-4" id="nonReusableCount">0</p>
+                    <p class="card-text" id="nonReusablePercentage">0%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Avg. Quality Score</h5>
+                    <p class="display-4" id="avgQualityScore">0.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Component Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="componentDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Reusability Ratio</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="reusabilityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quality Score Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="qualityDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Assessment Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="assessmentTimelineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Quality Comparison -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Component Quality Comparison</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="qualityComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Assessments -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Monthly Assessment Volume</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyAssessmentsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Chart colors
+    function generateChartColors(count) {
+        const colors = [
+            '#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6',
+            '#1abc9c', '#d35400', '#34495e', '#16a085', '#c0392b'
+        ];
+        
+        // If we need more colors than are in our predefined list, generate additional ones
+        if (count > colors.length) {
+            for (let i = colors.length; i < count; i++) {
+                const r = Math.floor(Math.random() * 200);
+                const g = Math.floor(Math.random() * 200);
+                const b = Math.floor(Math.random() * 200);
+                colors.push(`rgb(${r}, ${g}, ${b})`);
+            }
+        }
+        
+        return colors.slice(0, count);
+    }
+
+    // Load statistics data from API
+    function loadStatisticsData() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                updateSummaryStats(data);
+                renderAllCharts(data);
+            })
+            .catch(error => {
+                console.error('Error fetching statistics:', error);
+            });
+    }
+
+    // Update summary statistics cards
+    function updateSummaryStats(data) {
+        document.getElementById('totalAssessments').textContent = data.total_assessments;
+        document.getElementById('reusableCount').textContent = data.reusability.reusable;
+        document.getElementById('nonReusableCount').textContent = data.reusability.non_reusable;
+        
+        // Calculate percentages
+        const reusablePercentage = (data.reusability.reusable / data.total_assessments) * 100 || 0;
+        const nonReusablePercentage = (data.reusability.non_reusable / data.total_assessments) * 100 || 0;
+        
+        document.getElementById('reusablePercentage').textContent = `${reusablePercentage.toFixed(1)}%`;
+        document.getElementById('nonReusablePercentage').textContent = `${nonReusablePercentage.toFixed(1)}%`;
+        
+        // Calculate average quality score
+        let totalQuality = 0;
+        let componentCount = 0;
+        
+        for (const component in data.average_quality) {
+            totalQuality += data.average_quality[component];
+            componentCount++;
+        }
+        
+        const avgQuality = componentCount > 0 ? totalQuality / componentCount : 0;
+        document.getElementById('avgQualityScore').textContent = avgQuality.toFixed(2);
+    }
+
+    // Render all charts
+    function renderAllCharts(data) {
+        renderComponentDistributionChart(data);
+        renderReusabilityChart(data);
+        renderQualityComparisonChart(data);
+        
+        // For demonstration, we'll generate mock data for the other charts
+        // These would ideally come from additional API endpoints
+        renderQualityDistributionChart();
+        renderAssessmentTimelineChart();
+        renderMonthlyAssessmentsChart();
+    }
+
+    // Component Distribution Chart (Pie Chart)
+    function renderComponentDistributionChart(data) {
+        const ctx = document.getElementById('componentDistributionChart').getContext('2d');
+        
+        const componentTypes = Object.keys(data.component_type_counts);
+        const componentCounts = componentTypes.map(type => data.component_type_counts[type]);
+        const colors = generateChartColors(componentTypes.length);
+        
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: componentTypes,
+                datasets: [{
+                    data: componentCounts,
+                    backgroundColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Component Types Distribution'
+                    }
+                }
+            }
+        });
+    }
+
+    // Reusability Chart (Doughnut Chart)
+    function renderReusabilityChart(data) {
+        const ctx = document.getElementById('reusabilityChart').getContext('2d');
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Reusable', 'Non-Reusable'],
+                datasets: [{
+                    data: [data.reusability.reusable, data.reusability.non_reusable],
+                    backgroundColor: ['#2ecc71', '#e74c3c'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Component Reusability'
+                    }
+                }
+            }
+        });
+    }
+
+    // Quality Score by Component Type (Bar Chart)
+    function renderQualityComparisonChart(data) {
+        const ctx = document.getElementById('qualityComparisonChart').getContext('2d');
+        
+        const componentTypes = Object.keys(data.average_quality);
+        const qualityScores = componentTypes.map(type => data.average_quality[type]);
+        const colors = generateChartColors(componentTypes.length);
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: componentTypes,
+                datasets: [{
+                    label: 'Average Quality Score',
+                    data: qualityScores,
+                    backgroundColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Average Quality Score by Component Type'
+                    }
+                }
+            }
+        });
+    }
+
+    // For these additional charts, we'd ideally fetch data from additional API endpoints
+    // For now, they're using placeholder data
+    function renderQualityDistributionChart() {
+        const ctx = document.getElementById('qualityDistributionChart').getContext('2d');
+        
+        // Histogram data - would come from an API in a real implementation
+        const labels = ['0.0-0.2', '0.2-0.4', '0.4-0.6', '0.6-0.8', '0.8-1.0'];
+        const data = [5, 12, 25, 30, 18];  // Sample counts in each range
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Components',
+                    data: data,
+                    backgroundColor: '#3498db',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribution of Quality Scores'
+                    }
+                }
+            }
+        });
+    }
+
+    function renderAssessmentTimelineChart() {
+        const ctx = document.getElementById('assessmentTimelineChart').getContext('2d');
+        
+        // Timeline data - would come from an API in a real implementation
+        const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+        const data = [8, 15, 12, 20];  // Assessments per week
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Assessments',
+                    data: data,
+                    borderColor: '#9b59b6',
+                    tension: 0.1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Recent Assessment Activity'
+                    }
+                }
+            }
+        });
+    }
+
+    function renderMonthlyAssessmentsChart() {
+        const ctx = document.getElementById('monthlyAssessmentsChart').getContext('2d');
+        
+        // Monthly data - would come from an API in a real implementation
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        const reusableData = [12, 19, 15, 20, 25, 18];
+        const nonReusableData = [8, 12, 10, 5, 10, 7];
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Reusable',
+                        data: reusableData,
+                        backgroundColor: '#2ecc71'
+                    },
+                    {
+                        label: 'Non-Reusable',
+                        data: nonReusableData,
+                        backgroundColor: '#e74c3c'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stacked: false
+                    },
+                    x: {
+                        stacked: false
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Assessment Volume'
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize charts when the page loads
+    window.addEventListener('load', function() {
+        loadStatisticsData();
+    });
+</script>
+{% endblock %}

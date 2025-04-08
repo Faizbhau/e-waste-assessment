@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">About the Author</h1>
+    
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <p>Learn more about the creator of this e-waste component assessment system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow h-100">
+                <img src="{{ url_for('static', filename='img/author/faiz.jpg') }}" class="card-img-top img-fluid author-profile-img" alt="Mohd Faiz">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Mohd Faiz</h3>
+                    <p class="text-muted">M.Tech Computer Science and Engineering</p>
+                    <p class="text-muted">Vellore Institute of Technology, Chennai</p>
+                    <div class="d-flex justify-content-center gap-3 mt-3">
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow h-100">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Biography</h3>
+                    <p>I am a passionate technologist pursuing my M.Tech in Computer Science and Engineering at Vellore Institute of Technology, Chennai. With a deep interest towards SDG goals and artificial intelligence, I developed this e-waste component assessment system as part of my research interest in AI and ML technologies.</p>
+                    
+                    <p>My academic journey is focused on leveraging machine learning and computer vision techniques to solve real-world problems, particularly in the area of electronic waste management and recycling. This project represents the intersection of my technical skills and commitment to environmental sustainability.</p>
+                    
+                    <h4 class="mt-4 mb-3">Research Interests</h4>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item"><i class="fas fa-microscope me-2 text-primary"></i> Artificial Intelligence & Machine Learning</li>
+                        <li class="list-group-item"><i class="fas fa-eye me-2 text-primary"></i> Computer Vision</li>
+                        <li class="list-group-item"><i class="fas fa-recycle me-2 text-primary"></i> Sustainable Technology</li>
+                        <li class="list-group-item"><i class="fas fa-microchip me-2 text-primary"></i> E-Waste Management</li>
+                        <li class="list-group-item"><i class="fas fa-cloud me-2 text-primary"></i> Cloud Computing & Big Data</li>
+                    </ul>
+                    
+                    <h4 class="mt-4 mb-3">About This Project</h4>
+                    <p>This e-waste component assessment system utilizes deep learning techniques to analyze images of electronic components and determine their quality, reusability, and proper classification. The goal is to reduce electronic waste by facilitating the identification and reuse of viable components that would otherwise be discarded.</p>
+                    
+                    <p>The project combines computer vision for image analysis with a comprehensive database system to track assessment results and provide valuable insights through data visualization. Future directions include expanding the range of component types that can be assessed and implementing more sophisticated quality determination algorithms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Educational Background</h3>
+                    <div class="timeline">
+                        <div class="row g-0">
+                            <div class="col-sm-3">
+                                <div class="timeline-date text-primary mb-3">
+                                    <h5>2024 - Present</h5>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="timeline-box mb-4">
+                                    <h5>M.Tech in Computer Science and Engineering</h5>
+                                    <p class="text-muted">Vellore Institute of Technology, Chennai</p>
+                                    <p>Specialization in Artificial Intelligence and Machine Learning</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-0">
+                            <div class="col-sm-3">
+                                <div class="timeline-date text-primary mb-3">
+                                    <h5>2019 - 2023</h5>
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="timeline-box mb-4">
+                                    <h5>B.Tech in Computer Science and Engineering</h5>
+                                    <p class="text-muted">B.N College of Engineering and Technology, Lucknow</p>
+                                    <p>Focused on programming fundamentals, data structures, and software engineering</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-body text-center">
+                    <h4>Contact the Author</h4>
+                    <p>For more information about this project or to collaborate on similar initiatives, feel free to reach out.</p>
+                    <div class="d-flex justify-content-center gap-3 mb-3">
+                        <a href="mailto:mfaiz7166@gmail.com" class="btn btn-primary">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </a>
+                        <a href="https://www.linkedin.com/in/mofaiz786" target="_blank" class="btn btn-info">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn
+                        </a>
+                        <a href="https://github.com/Faizbhau" target="_blank" class="btn btn-dark">
+                            <i class="fab fa-github me-2"></i>GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

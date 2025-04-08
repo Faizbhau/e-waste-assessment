@@ -1,0 +1,240 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">E-Waste Reusability Guide</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <p>This guide provides information on how to interpret assessment results and understand the factors that determine component reusability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Understanding Quality Scores</h5>
+                </div>
+                <div class="card-body">
+                    <p>Our system assesses e-waste components and assigns a quality score between 0 and 1, where:</p>
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white mb-3">
+                                <div class="card-body">
+                                    <h3>0.0 - 0.4</h3>
+                                    <p>Poor Quality</p>
+                                    <p><i class="fas fa-times-circle fa-2x"></i></p>
+                                    <p>Not recommended for reuse</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-dark mb-3">
+                                <div class="card-body">
+                                    <h3>0.4 - 0.6</h3>
+                                    <p>Fair Quality</p>
+                                    <p><i class="fas fa-exclamation-triangle fa-2x"></i></p>
+                                    <p>Limited reuse potential</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white mb-3">
+                                <div class="card-body">
+                                    <h3>0.6 - 0.8</h3>
+                                    <p>Good Quality</p>
+                                    <p><i class="fas fa-check-circle fa-2x"></i></p>
+                                    <p>Suitable for reuse in most applications</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-body">
+                                    <h3>0.8 - 1.0</h3>
+                                    <p>Excellent Quality</p>
+                                    <p><i class="fas fa-star fa-2x"></i></p>
+                                    <p>Ideal for reuse in all applications</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>The confidence score indicates how certain our AI model is about its assessment. Higher confidence means a more reliable assessment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Factors -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Assessment Factors</h5>
+                </div>
+                <div class="card-body">
+                    <p>Our AI model evaluates several factors when assessing component quality:</p>
+                    
+                    <div class="accordion" id="factorsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-microchip me-2"></i> Physical Condition
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#factorsAccordion">
+                                <div class="accordion-body">
+                                    <p>The physical state of the component, including:</p>
+                                    <ul>
+                                        <li>Presence of physical damage (cracks, breaks, bending)</li>
+                                        <li>Signs of corrosion or oxidation</li>
+                                        <li>Condition of connection points (pins, solder joints, contacts)</li>
+                                        <li>Burns, scorch marks, or other heat damage</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-calendar-alt me-2"></i> Age and Wear
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#factorsAccordion">
+                                <div class="accordion-body">
+                                    <p>How age and usage affect the component:</p>
+                                    <ul>
+                                        <li>Manufacturing date and technology generation</li>
+                                        <li>Evidence of heavy usage (discoloration, wear patterns)</li>
+                                        <li>Component lifespan and expected remaining life</li>
+                                        <li>Compatibility with current systems and standards</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="fas fa-tachometer-alt me-2"></i> Performance Indicators
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#factorsAccordion">
+                                <div class="accordion-body">
+                                    <p>Visual cues that may indicate performance issues:</p>
+                                    <ul>
+                                        <li>Signs of overheating or thermal stress</li>
+                                        <li>Quality of manufacturing and original components</li>
+                                        <li>Evidence of previous repairs or modifications</li>
+                                        <li>Presence of dust or foreign materials</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    <i class="fas fa-cog me-2"></i> Component-Specific Factors
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#factorsAccordion">
+                                <div class="accordion-body">
+                                    <p>Special considerations based on component type:</p>
+                                    <ul>
+                                        <li><strong>Circuit Boards:</strong> Trace integrity, component density, layer condition</li>
+                                        <li><strong>Processors/CPUs:</strong> Pin condition, heat spreader integrity, socket compatibility</li>
+                                        <li><strong>Memory Modules:</strong> Contact cleanliness, chip condition, module integrity</li>
+                                        <li><strong>Power Supply Units:</strong> Capacitor health, connector condition, cooling system integrity</li>
+                                        <li><strong>Storage Drives:</strong> Platter condition (HDDs), chip integrity (SSDs), connector wear</li>
+                                        <li><strong>Display Panels:</strong> Dead pixels, uniformity issues, backlight condition</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Practices -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Best Practices for E-Waste Reclamation</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Preparing Components for Assessment</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ol class="list-group list-group-numbered mb-0">
+                                        <li class="list-group-item">Clean components of dust and debris</li>
+                                        <li class="list-group-item">Remove any attached cables or accessories</li>
+                                        <li class="list-group-item">Photograph in good lighting without glare</li>
+                                        <li class="list-group-item">Include multiple angles for better assessment</li>
+                                        <li class="list-group-item">Ensure component type is clearly visible</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">After Assessment</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ol class="list-group list-group-numbered mb-0">
+                                        <li class="list-group-item">Store reusable components in anti-static packaging</li>
+                                        <li class="list-group-item">Label components with assessment results</li>
+                                        <li class="list-group-item">Group components by type and quality score</li>
+                                        <li class="list-group-item">Recycle non-reusable components responsibly</li>
+                                        <li class="list-group-item">Document inventory for future reference</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learn More -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Learn More</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p>Want to learn more about e-waste reclamation and our assessment process?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="{{ url_for('about') }}" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-2"></i>About Our Project
+                        </a>
+                        <a href="{{ url_for('catalog') }}" class="btn btn-info">
+                            <i class="fas fa-book me-2"></i>Component Catalog
+                        </a>
+                        <a href="{{ url_for('statistics') }}" class="btn btn-success">
+                            <i class="fas fa-chart-bar me-2"></i>Assessment Statistics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,239 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Search Assessments</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <p>Search and filter through all previous e-waste component assessments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter Form -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Search Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form id="searchForm" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="componentType" class="form-label">Component Type</label>
+                            <select id="componentType" class="form-select">
+                                <option value="">All Component Types</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="minQuality" class="form-label">Min Quality Score</label>
+                            <input type="number" class="form-control" id="minQuality" min="0" max="1" step="0.1">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="reusability" class="form-label">Reusability</label>
+                            <select id="reusability" class="form-select">
+                                <option value="">All</option>
+                                <option value="true">Reusable</option>
+                                <option value="false">Non-Reusable</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="sortBy" class="form-label">Sort By</label>
+                            <select id="sortBy" class="form-select">
+                                <option value="assessment_date">Date (Newest First)</option>
+                                <option value="quality_score">Quality Score (Highest)</option>
+                                <option value="component_type">Component Type</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                            <button type="reset" class="btn btn-secondary ms-2">
+                                <i class="fas fa-undo me-2"></i>Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Search Results</h5>
+                    <span id="resultCount" class="badge bg-primary">0 results</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Component Type</th>
+                                    <th scope="col">Quality Score</th>
+                                    <th scope="col">Reusable</th>
+                                    <th scope="col">Confidence</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTable">
+                                <!-- Results will be dynamically populated here -->
+                                <tr>
+                                    <td colspan="8" class="text-center">Use the filters above to search for assessments</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize the search page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Populate component type dropdown
+        populateComponentTypes();
+        
+        // Set up event listeners
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            searchAssessments();
+        });
+        
+        document.getElementById('searchForm').addEventListener('reset', function() {
+            setTimeout(function() {
+                searchAssessments();
+            }, 10);
+        });
+        
+        // Initial search to show all results
+        searchAssessments();
+    });
+    
+    // Populate component type dropdown with unique types from the database
+    function populateComponentTypes() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                const componentTypes = Object.keys(data.component_type_counts);
+                const select = document.getElementById('componentType');
+                
+                componentTypes.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching component types:', error);
+            });
+    }
+    
+    // Search assessments based on filter criteria
+    function searchAssessments() {
+        // Get filter values
+        const componentType = document.getElementById('componentType').value;
+        const minQuality = document.getElementById('minQuality').value;
+        const reusability = document.getElementById('reusability').value;
+        const sortBy = document.getElementById('sortBy').value;
+        
+        // Build query URL
+        let url = '/api/assessments?';
+        if (componentType) url += `component_type=${encodeURIComponent(componentType)}&`;
+        if (minQuality) url += `min_quality=${encodeURIComponent(minQuality)}&`;
+        if (reusability) url += `reusable=${encodeURIComponent(reusability)}&`;
+        
+        // Always add sort parameters
+        const [sortField, sortDir] = sortBy.split('_');
+        url += `sort_by=${sortField}&sort_order=${sortDir || 'desc'}`;
+        
+        // Fetch results
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => {
+                console.error('Error searching assessments:', error);
+                alert('An error occurred while searching. Please try again.');
+            });
+    }
+    
+    // Display search results in the table
+    function displayResults(assessments) {
+        const resultsTable = document.getElementById('resultsTable');
+        const resultCount = document.getElementById('resultCount');
+        
+        // Update result count
+        resultCount.textContent = `${assessments.length} result${assessments.length !== 1 ? 's' : ''}`;
+        
+        // Clear existing results
+        resultsTable.innerHTML = '';
+        
+        if (assessments.length === 0) {
+            resultsTable.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center">No assessments match your search criteria</td>
+                </tr>
+            `;
+            return;
+        }
+        
+        // Add each assessment to the table
+        assessments.forEach(assessment => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td>${assessment.id}</td>
+                <td><img src="/uploads/${assessment.filename}" alt="Component" class="img-thumbnail" style="width: 50px; height: 50px;"></td>
+                <td>${assessment.component_type}</td>
+                <td>
+                    <div class="progress" role="progressbar" aria-valuenow="${assessment.quality_score * 100}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar ${getQualityScoreColorClass(assessment.quality_score)}" style="width: ${assessment.quality_score * 100}%">
+                            ${(assessment.quality_score * 100).toFixed(0)}%
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge ${assessment.reusable ? 'bg-success' : 'bg-danger'}">
+                        ${assessment.reusable ? 'Reusable' : 'Non-Reusable'}
+                    </span>
+                </td>
+                <td>${(assessment.confidence * 100).toFixed(0)}%</td>
+                <td>${assessment.assessment_date}</td>
+                <td>
+                    <a href="/results/${assessment.id}" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </td>
+            `;
+            
+            resultsTable.appendChild(row);
+        });
+    }
+    
+    // Get appropriate Bootstrap color class based on quality score
+    function getQualityScoreColorClass(score) {
+        if (score >= 0.8) return 'bg-success';
+        if (score >= 0.6) return 'bg-info';
+        if (score >= 0.4) return 'bg-warning';
+        return 'bg-danger';
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <h1>Automated Quality Assessment</h1>
+        <h3 class="text-secondary">for Reusable E-waste Components</h3>
+        <p class="lead mt-4">
+            Upload images of electronic waste components to assess their quality and reusability potential.
+            Our machine learning model analyzes your components and provides detailed quality scores.
+        </p>
+        <ul class="list-group list-group-flush mt-3 mb-4">
+            <li class="list-group-item bg-transparent">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                Instant quality assessment
+            </li>
+            <li class="list-group-item bg-transparent">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                Component type identification
+            </li>
+            <li class="list-group-item bg-transparent">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                Reusability score with confidence rating
+            </li>
+            <li class="list-group-item bg-transparent">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                Detailed assessment reports
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Upload Component Image</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="upload-form">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select an image of an e-waste component</label>
+                        <input class="form-control" type="file" id="file" name="file" accept=".jpg,.jpeg,.png" required>
+                        <div class="form-text">Supported formats: JPG, JPEG, PNG</div>
+                    </div>
+                    <div class="image-preview-container mt-3 mb-3 d-none" id="image-preview-container">
+                        <label class="form-label">Image Preview</label>
+                        <div class="image-preview border rounded p-2 text-center">
+                            <img id="image-preview" class="img-fluid" src="#" alt="Image Preview">
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="upload-btn">
+                            <i class="fas fa-upload me-2"></i>Upload and Analyze
+                        </button>
+                    </div>
+                </form>
+                <div class="progress mt-3 d-none" id="upload-progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">How It Works</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="p-3">
+                            <i class="fas fa-upload fa-2x mb-3 text-primary"></i>
+                            <h6>Upload</h6>
+                            <p class="small">Submit an image of your e-waste component</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3">
+                            <i class="fas fa-robot fa-2x mb-3 text-primary"></i>
+                            <h6>Analysis</h6>
+                            <p class="small">Our ML model analyzes the component</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3">
+                            <i class="fas fa-chart-pie fa-2x mb-3 text-primary"></i>
+                            <h6>Results</h6>
+                            <p class="small">View detailed assessment results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">Supported Components</h2>
+        <div class="row text-center">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-microchip fa-3x mb-3 text-info"></i>
+                        <h5>Circuit Boards</h5>
+                        <p class="small">PCBs from various electronic devices</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-memory fa-3x mb-3 text-info"></i>
+                        <h5>Memory Modules</h5>
+                        <p class="small">RAM and memory components</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-hdd fa-3x mb-3 text-info"></i>
+                        <h5>Storage Devices</h5>
+                        <p class="small">Hard drives and storage media</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-plug fa-3x mb-3 text-info"></i>
+                        <h5>Power Components</h5>
+                        <p class="small">Power supplies and circuits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Image preview functionality
+    document.getElementById('file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('image-preview-container').classList.remove('d-none');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Form submission with loading indicator
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        const fileInput = document.getElementById('file');
+        if (fileInput.files.length === 0) {
+            e.preventDefault();
+            alert('Please select a file to upload');
+            return;
+        }
+
+        // Show progress
+        document.getElementById('upload-btn').disabled = true;
+        document.getElementById('upload-progress').classList.remove('d-none');
+        
+        // Simulate progress (in a real app, you'd use fetch with upload progress)
+        const progressBar = document.querySelector('.progress-bar');
+        let progress = 0;
+        const interval = setInterval(function() {
+            progress += 5;
+            progressBar.style.width = progress + '%';
+            progressBar.setAttribute('aria-valuenow', progress);
+            
+            if (progress >= 90) {
+                clearInterval(interval);
+            }
+        }, 100);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <h1>Assessment Dashboard</h1>
+        <p class="lead">Review and analyze all component assessments</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h6 class="text-secondary">Total Assessments</h6>
+                <div class="display-4 mt-2 mb-2" id="total-assessments">-</div>
+                <p class="small text-muted">Components analyzed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h6 class="text-secondary">Reusable Components</h6>
+                <div class="display-4 mt-2 mb-2" id="reusable-count">-</div>
+                <p class="small text-muted">Suitable for reuse</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h6 class="text-secondary">Non-Reusable</h6>
+                <div class="display-4 mt-2 mb-2" id="non-reusable-count">-</div>
+                <p class="small text-muted">Should be recycled</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h6 class="text-secondary">Average Quality</h6>
+                <div class="display-4 mt-2 mb-2" id="avg-quality">-</div>
+                <p class="small text-muted">Overall component quality</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Component Type Distribution</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="component-distribution-chart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Reusability Breakdown</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="reusability-chart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Assessment History</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-secondary me-2" onclick="downloadReport('csv')">
+                            <i class="fas fa-download me-1"></i> CSV
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="downloadReport('json')">
+                            <i class="fas fa-download me-1"></i> JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="filter-component" class="form-label">Component Type</label>
+                            <select class="form-select" id="filter-component">
+                                <option value="">All Components</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filter-quality" class="form-label">Min Quality</label>
+                            <select class="form-select" id="filter-quality">
+                                <option value="">Any Quality</option>
+                                <option value="0.9">90% and above</option>
+                                <option value="0.8">80% and above</option>
+                                <option value="0.7">70% and above</option>
+                                <option value="0.6">60% and above</option>
+                                <option value="0.5">50% and above</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="filter-reusable" class="form-label">Reusability</label>
+                            <select class="form-select" id="filter-reusable">
+                                <option value="">All</option>
+                                <option value="true">Reusable</option>
+                                <option value="false">Non-Reusable</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="sort-by" class="form-label">Sort By</label>
+                            <select class="form-select" id="sort-by">
+                                <option value="assessment_date">Date (Newest)</option>
+                                <option value="quality_score">Quality (Highest)</option>
+                                <option value="component_type">Component Type</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Component</th>
+                                <th>Quality</th>
+                                <th>Reusable</th>
+                                <th>Confidence</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assessments-table-body">
+                            <tr>
+                                <td colspan="7" class="text-center">Loading assessments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="no-data-message" class="alert alert-info d-none">
+                    No assessment data found. Upload component images to get started.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
